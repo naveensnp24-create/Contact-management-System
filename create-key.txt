@@ -1,0 +1,11 @@
+AWS Console opened. Follow these steps:
+
+1. Click "Create key pair"
+2. Name: ec2_secret_naveen_new
+3. Key pair type: RSA
+4. Private key format: .pem
+5. Click "Create key pair"
+6. Save the downloaded .pem file to this folder
+7. Run: ssh -i "ec2_secret_naveen_new.pem" ubuntu@ec2-13-60-237-48.eu-north-1.compute.amazonaws.com
+
+Note: You'll need to attach this new key to your EC2 instance.
