@@ -49,8 +49,8 @@ createRoot(document.getElementById('root')).render(
         <BrowserRouter>
             <Routes>
                 <Route path='/login' element={<LoginForm/>}/>
+                <Route path='/adminPage' element={<ProtectedRoute> <AdminPage/></ProtectedRoute>}/>
                 <Route element={<HomeLayout/>}>
-                    
                     <Route path='/' element={<App/>}/>
                     <Route path="/products">
                         <Route index element={<ProductList products={products}/>}/>
@@ -61,12 +61,8 @@ createRoot(document.getElementById('root')).render(
                     <Route path='/Contact' element={<Contact/>}/>
                     <Route path='/Cart' element={<Cart/>}/>
                     <Route path='/Orders' element={<Orders/>}/>
-                <Route path='/adminPage' element={<ProtectedRoute> <AdminPage/></ProtectedRoute>}/>
                 </Route>
-
-                
             </Routes>
         </BrowserRouter>
     </GlobalProvider>
-
 )

@@ -41,7 +41,7 @@ const Cart = () => {
                   <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg text-white">{item.name}</h3>
-                    <p className="text-slate-400 text-sm">${typeof item.price === 'string' ? item.price.replace(/[^0-9.-]+/g, '') : item.price} each</p>
+                    <p className="text-slate-400 text-sm">₹{typeof item.price === 'string' ? item.price.replace(/[^0-9.-]+/g, '') : item.price} each</p>
                     <div className="flex items-center gap-2 mt-2">
                       <button onClick={() => updateQuantity(item.productId || item.id, item.quantity - 1)} className="bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600">-</button>
                       <span className="px-3 font-medium text-white">{item.quantity}</span>
@@ -50,7 +50,7 @@ const Cart = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-lg text-white">${((typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.-]+/g, '')) : parseFloat(item.price) || 0) * item.quantity).toFixed(2)}</p>
+                    <p className="font-bold text-lg text-white">₹{((typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.-]+/g, '')) : parseFloat(item.price) || 0) * item.quantity).toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -59,7 +59,7 @@ const Cart = () => {
             <div className="border-t border-slate-700 pt-4">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xl font-semibold text-white">Total Amount:</span>
-                <span className="text-3xl font-bold text-green-400">${total.toFixed(2)}</span>
+                <span className="text-3xl font-bold text-green-400">₹{total.toFixed(2)}</span>
               </div>
               <button onClick={() => setShowCheckout(true)} className="w-full bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
                 Proceed to Pay
@@ -79,7 +79,7 @@ const Cart = () => {
                     <div className="bg-slate-800 rounded-lg p-4 mb-6 border border-slate-700">
                       <div className="flex justify-between items-center">
                         <span className="text-slate-300">Total Amount:</span>
-                        <span className="text-2xl font-bold text-green-400">${total.toFixed(2)}</span>
+                        <span className="text-2xl font-bold text-green-400">₹{total.toFixed(2)}</span>
                       </div>
                     </div>
                     

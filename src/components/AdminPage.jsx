@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Header from './Header';
 
 const AdminPage = () => {
     const [name, setName] = useState('');
@@ -19,27 +20,50 @@ const AdminPage = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:3000/products', productData, {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const token = sessionStorage.getItem('token');
+            
+            if (!token) {
+                toast.error('Please login to add products');
+                return;
+            }
+            
+            console.log('Adding product to:', apiUrl);
+            console.log('Product data:', productData);
+            
+            const response = await axios.post(`${apiUrl}/products`, productData, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             
+            console.log('Response status:', response.status);
+            console.log('Response data:', response.data);
             toast.success('Product added successfully!');
             setName('');
             setPrice('');
             setImage('');
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to add product');
+            console.error('Full error object:', error);
+            console.error('Error response:', error.response);
+            console.error('Error message:', error.message);
+            if (error.response) {
+                console.error('Response status:', error.response.status);
+                console.error('Response data:', error.response.data);
+            }
+            toast.error(error.response?.data?.error || error.message || 'Failed to add product');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-6">
-            <div className="w-full max-w-md bg-slate-900 shadow-2xl rounded-2xl p-8 border border-slate-700">
-                <h1 className="text-center text-3xl font-bold text-white mb-6">Add Product</h1>
+        <div className="min-h-screen bg-black">
+            <Header />
+            <div className="flex items-center justify-center p-6">
+                <div className="w-full max-w-md bg-slate-900 shadow-2xl rounded-2xl p-8 border border-slate-700">
+                    <h1 className="text-center text-3xl font-bold text-white mb-6">Add Product</h1>
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-slate-300 mb-1">Product Name</label>
@@ -87,6 +111,7 @@ const AdminPage = () => {
                 </form>
             </div>
         </div>
+    </div>
     );
 };
 

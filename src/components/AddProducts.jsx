@@ -17,13 +17,23 @@ const AddProducts = () => {
         e.preventDefault();
         try {
             const token = sessionStorage.getItem('token');
+            if (!token) {
+                toast.error('Please login to add products');
+                return;
+            }
+            
             const { data } = await axios.post('http://localhost:3000/products', product, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             toast.success('Product added successfully!');
             setProduct({ name: '', price: '', image: '' });
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to add product');
+            if (error.response?.status === 401) {
+                toast.error('Please login to add products');
+                sessionStorage.removeItem('token');
+            } else {
+                toast.error(error.response?.data?.error || 'Failed to add product');
+            }
         }
     };
 
