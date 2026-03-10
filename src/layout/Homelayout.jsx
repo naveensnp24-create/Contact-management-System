@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "../components/Header"
-import { useState, useEffect } from 'react';
+import Header from "../components/Header.jsx"
+import { useState } from 'react';
 
 const Homelayout = () => {
     const location = useLocation();
