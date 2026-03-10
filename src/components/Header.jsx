@@ -56,17 +56,17 @@ const Header = ({ onSearch, showAddButton, onAddContact, showForm }) => {
 
     return (
         <>
-            <div className="flex flex-wrap p-3 sm:p-5 w-full gap-2 sm:gap-5 bg-blue-500 items-center text-white">
+            <div className="flex flex-wrap p-3 md:p-5 w-full gap-2 md:gap-5 bg-blue-500 items-center text-white">
                 <IoMenuSharp 
-                    className="text-2xl sm:hidden cursor-pointer" 
+                    className="text-2xl md:hidden cursor-pointer" 
                     onClick={() => setMenuOpen(!menuOpen)}
                 />
-                <a className="hidden sm:block text-2xl font-bold cursor-pointer" onClick={handleAdduser}>Contacts</a>
-                <a className="hidden sm:block text-2xl font-bold cursor-pointer" onClick={handleDashboard}>Dashboard</a>
-                <a className="hidden sm:block text-2xl font-bold cursor-pointer" onClick={handleSupport}>Support</a>
+                <a className="hidden md:flex text-2xl font-bold cursor-pointer" onClick={handleAdduser}>Contacts</a>
+                <a className="hidden md:flex text-2xl font-bold cursor-pointer" onClick={handleDashboard}>Dashboard</a>
+                <a className="hidden md:flex text-2xl font-bold cursor-pointer" onClick={handleSupport}>Support</a>
                 
-                <div className="relative w-48 sm:w-64">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400">
+                <div className="relative w-48 md:w-64">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
                     <input
@@ -74,14 +74,14 @@ const Header = ({ onSearch, showAddButton, onAddContact, showForm }) => {
                         placeholder="Search..."
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 text-sm sm:text-base rounded bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        className="w-full pl-8 md:pl-10 pr-2 md:pr-3 py-1.5 md:py-2 text-sm md:text-base rounded bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
                     />
                 </div>
                 
                 {showAddButton && (
                     <button
                         onClick={onAddContact}
-                        className={`px-2 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base rounded text-white ${
+                        className={`px-2 md:px-4 py-1.5 md:py-2 text-sm md:text-base rounded text-white ${
                             showForm 
                                 ? 'bg-red-500 hover:bg-red-600' 
                                 : 'bg-green-500 hover:bg-green-600'
@@ -92,15 +92,15 @@ const Header = ({ onSearch, showAddButton, onAddContact, showForm }) => {
                 )}
                 
                 {isLoggedIn ? (
-                    <button className="hidden sm:block text-xl rounded-xl ml-auto px-3 py-2 bg-blue-600 hover:bg-slate-500 text-white font-bold" onClick={handleLogout}>Logout</button>
+                    <button className="hidden md:flex text-xl rounded-xl ml-auto px-3 py-2 bg-blue-600 hover:bg-slate-500 text-white font-bold" onClick={handleLogout}>Logout</button>
                 ) : (
-                    <button className="hidden sm:block text-xl rounded-xl ml-auto px-3 py-2 bg-blue-800 hover:bg-slate-400 text-white font-bold" onClick={handleLogin}>Login</button>
+                    <button className="hidden md:flex text-xl rounded-xl ml-auto px-3 py-2 bg-blue-800 hover:bg-slate-400 text-white font-bold" onClick={handleLogin}>Login</button>
                 )}
             </div>
             
             {/* Mobile menu dropdown */}
             {menuOpen && (
-                <div className="sm:hidden bg-blue-600 text-white">
+                <div className="md:hidden bg-blue-600 text-white">
                     <div className="flex flex-col p-4 space-y-3">
                         <a className="text-lg font-bold cursor-pointer hover:text-blue-200" onClick={handleAdduser}>Contacts</a>
                         <a className="text-lg font-bold cursor-pointer hover:text-blue-200" onClick={handleDashboard}>Dashboard</a>
