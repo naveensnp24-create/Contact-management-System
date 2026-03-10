@@ -12,7 +12,7 @@ const Homelayout = () => {
     const isContactPage = location.pathname === '/' || location.pathname === '/contact';
     
     return (
-        <>        
+        <div>        
             <Header 
                 onSearch={searchHandler} 
                 showAddButton={isContactPage} 
@@ -21,7 +21,7 @@ const Homelayout = () => {
             />
             {/* pass down handlers to child components */}
             <Outlet context={{ setSearchHandler, setAddContactHandler, setShowForm, showForm }} />
-        </>
+        </div>
     )
 }
 
