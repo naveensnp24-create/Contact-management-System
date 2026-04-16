@@ -1,8 +1,7 @@
-import { useState,useRef } from "react"
-import { useNavigate } from "react-router";
-import AdminPage from "./AdminPage";
+import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 import {toast} from "react-toastify";
-import axios from "axios";
+import { authAPI } from '../services/api';
 
 
 
@@ -10,11 +9,10 @@ import axios from "axios";
 const LoginForm=()=>{
     const [username,setuserName]=useState('');
     const [password,setPassword]=useState('');
-    const [role,setRole]=useState('');
+    const [role,setRole]=useState('user');
     const [isRegister,setIsRegister]=useState(false);
     const [confirmPassword,setConfirmPassword]=useState('');
     const navigate= useNavigate()
-    const passwordRef=useRef('')
     
     const handleNameChange=(e)=>{
         setuserName(e.target.value)
@@ -35,15 +33,17 @@ const LoginForm=()=>{
     const handleSubmit= async (e)=>{
         e.preventDefault();
         
+        console.log('Form data:', { email: username, password, role });
+        
         if (isRegister) {
             if (password !== confirmPassword) {
                 toast.error("Passwords don't match!");
                 return;
             }
             try {
-                const {data} = await axios.post("http://localhost:3000/auth/register",{
+                const {data} = await authAPI.register({
                     email:username,
-                    password:passwordRef.current.value,
+                    password:password,
                     role:role
                 });
                 toast.success(data.message);
@@ -53,22 +53,20 @@ const LoginForm=()=>{
             }
         } else {
             try {
-                const {data} = await axios.post("http://localhost:3000/auth/login",{
+                console.log('Sending login data:', { email: username, password });
+                const {data} = await authAPI.login({
                     email:username,
-                    password:passwordRef.current.value
+                    password:password
                 });
                 toast.success(data.message);
                 sessionStorage.setItem("token",data.token);
                 sessionStorage.setItem('isLoggedIn', 'true');
                 sessionStorage.setItem('role', data.role);
+                sessionStorage.setItem('userEmail', username);
                 
-                if (data.role === 'admin') {
-                    navigate('/adminPage');
-                } else {
-                    navigate('/');
-                }
+                navigate('/');
             } catch (error) {
-                toast.error(error.response?.data?.message || "Login failed");
+                toast.error(error.response?.data?.error || "Login failed");
             }
         }
     }
@@ -79,7 +77,7 @@ const LoginForm=()=>{
     return(
         <div className="min-h-screen bg-black flex items-center justify-center p-6">
             <div className="w-full max-w-md bg-slate-900 shadow-2xl rounded-2xl p-8 border border-slate-700">    
-                <form className="flex flex-col space-y-4">
+                <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
                     <h1 className="text-center text-3xl font-bold text-white mb-6">{isRegister ? 'REGISTER' : 'LOGIN'}</h1>
                     <div>
                         <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
@@ -87,7 +85,7 @@ const LoginForm=()=>{
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-slate-300 mb-1">Password</label>
-                        <input type="password" id="pass" name="PASSWORD" placeholder="Enter password" value={password} className="bg-slate-800 border border-slate-700 text-white rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent" onChange={handlePasswordChange} ref={passwordRef}/>
+                        <input type="password" id="pass" name="PASSWORD" placeholder="Enter password" value={password} className="bg-slate-800 border border-slate-700 text-white rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent" onChange={handlePasswordChange}/>
                     </div>
                     {isRegister && (
                         <div>
@@ -98,12 +96,11 @@ const LoginForm=()=>{
                     <div>
                         <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
                         <select value={role} className="bg-slate-800 border border-slate-700 text-white rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent" onChange={handleRoleChange}>
-                            <option value="">Select role</option>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors shadow-lg mt-6" onClick={handleSubmit}>{isRegister ? 'Register' : 'Login'}</button>
+                    <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors shadow-lg mt-6">{isRegister ? 'Register' : 'Login'}</button>
                     <p className="text-center text-slate-400 mt-4">
                         {isRegister ? 'Already have an account?' : "Don't have an account?"}
                         <button type="button" onClick={() => setIsRegister(!isRegister)} className="text-blue-400 hover:text-blue-300 ml-2 font-medium">

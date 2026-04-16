@@ -1,133 +1,70 @@
-// import React, {useContext} from 'react'
-// import StudentCard from './components/StudentCard';
-// import Counter from './components/Counter';
-// import UserDetails from './components/UserDetails';
-// import LoginForm from './components/LoginForm';
-// import Pagination from './components/Pagination';
-// import Footer from './components/Footer';
-// import ProductsList from './components/ProductsList';
-// import EcommerceFooter from './components/EcommerceFooter';
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import LoginForm from './components/LoginForm';
+import ContactList from './components/ContactList';
+import Dashboard from './components/Dashboard';
+import Support from './components/Support';
+import Profile from './components/Profile';
+import Navigation from './components/Navigation';
+import ContactProtectedRoute from './components/ContactProtectedRoute';
+import AdminView from './components/AdminView';
 
+const ContactApp = () => {
+  const [activeView, setActiveView] = useState('contacts');
+  const role = sessionStorage.getItem('role');
 
-// import Header  from './components/Header';  
-// import {GlobalProvider} from "./contexts/GlobalContext";
+  const renderActiveView = () => {
+    switch(activeView) {
+      case 'contacts': return <ContactList />;
+      case 'dashboard': return <Dashboard />;
+      case 'support': return <Support />;
+      case 'admin': return <AdminView />;
+      default: return <ContactList />;
+    }
+  };
 
-// const App = () => {
-
-//   let firstName = "Jhon";
-//   let lastName = "Smith";
-
-//   return (    <>
-    
-      
-//       {/* <Header/> */}
-//       <StudentCard fname={firstName} lname={lastName} age={20} />
-//       <Counter />
-    
-//       <GlobalProvider>
-//         <UserDetails />
-//         <Footer />
-//         <ProductsList />
-
-//         <LoginForm/>
-//       </GlobalProvider>
-//     </>
-//   )
-// };
-// export default App;
-
-
-
-
-
-
-
-
-
-// import AddProducts from './components/AddProducts';
-
-// const App=()=>{
-//   return (
-//     <>
-//     <Header/>
-//      <ProductsList />
-//      <AddProducts/>
-//      <EcommerceFooter/>
-
-//     </>
-//   )
-// };
-// export default App;
-// //  import Ecommerce from './components/Ecommerce';
-// import AddProducts from './components/AddProducts';
-// import OrderSummary from './components/OrderSummary';
-
-// const App=()=>{
-//   return (
-//     <>
-//     <Ecommerce/>
-//      <ProductsList />
-//      <AddProducts/>
-     
-//      <EcommerceFooter/>
-
-//     </>
-//   )
-// };
-// export default App;
-
-
-
-
-
-import ProductList from './components/ProductsList';
-import EcommerceFooter from './components/EcommerceFooter';
-
-
-const App = () => {
   return (
-    <div className="bg-black min-h-screen">
-      <ProductList/>
-      <EcommerceFooter/>
+    <div className="bg-gray-900 min-h-screen">
+      <Navigation activeView={activeView} setActiveView={setActiveView} role={role} />
+      {renderActiveView()}
     </div>
   );
 };
+
+const App = () => {
+  return (
+    <Router>
+      <div className="bg-black min-h-screen">
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route 
+            path="/" 
+            element={
+              <ContactProtectedRoute>
+                <ContactApp />
+              </ContactProtectedRoute>
+            } 
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </div>
+    </Router>
+  );
+};
+
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <h1 className="text-4xl mb-2"> Student Details</h1> */}
-      {/* <div className="text-lg" >
-    First Name: {firstName} <br/>
-    Last Name: {lastName}<br/>
-    Full Name: {firstName} {lastName}
-    
-    
-  </div> */}
-      {/* {StudentCard({ fname: "Tony", lname: "Stark", age: 30 })} */}
